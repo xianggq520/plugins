@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html ng-app="app">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	 	<script src="../../common/js/angularjs/angular.min.js"></script>
+	</head>
+	<body>
+		<div ng-controller="myController">
+	   		<div class="result">
+		       	<div>父scope：
+	           		<div>Say：{{name}}<br>改变父scope的name：<input type="text" value="" ng-model="name"/></div>
+		       	</div>
+		       	<div>隔离scope：
+		       		<!--{{}} 数据绑定-->
+	           		<div isolated-directive name="{{name}}">
+	           			<p>有模板的指令中的元素是否会被指令模板替换？答案是YES！</p>
+	           		</div>
+		       	</div>
+		        <div>隔离scope（不使用{{name}}）：
+             		<div isolated-directive name="name">
+             			<p>有模板的指令中的元素是否会被指令模板替换？答案是YES！</p>
+             		</div>
+				</div>
+				<hr>
+				<p>无指令模板的指令：</p>
+				<div>
+					<p>无隔离scope：</p>
+					<div notemplate-directive>
+						此处的scope继承自父级，双向绑定、指令中修改name和sex值将影响父级：<br>
+						scope.name： <input ng-model="name" />（hello world）<br>
+						scope.sex:<input ng-model="sex" />（女）<br>
+						<hr>
+					</div>
+					<!--指令的作用于范围为指令绑定的元素及指令模板-->
+					<p>隔离scope：</p>
+					<div notemplate-isolated-directive name="{{name}}">
+						此处的scope继承自父级，双向绑定，并非指令的隔离scope：<br>
+						scope.name：<input ng-model="name" />（此处name属性值继承、绑定自父级,而非指令中修改的xianggq）<br>
+						scope.sex:<input ng-model="sex" />（无法访问指令中定义的sex属性,即无值）<br>
+					</div>
+				</div>
+				<!--总结：-->
+				<!--指令的作用域范围为：
+					1.非隔离scope： 指令的scope就是指令外部的scope
+					2.隔离scope： 指令的scope范围为指令绑定的元素及指令模板，而非指令绑定的元素及内部子元素-->
+			</div>
+   		</div>
+	</body>
+	<script>
+		angular.module('app',[])
+		.controller("myController", function ($scope) {
+        	$scope.name = "hello world";
+    	}).directive("isolatedDirective", function () {
+	        return {
+	            scope: {
+	                name: "@"//单向继承、绑定指令绑定元素的同名属性的值（-个字符串）
+	            },
+	            template: 'Say：{{name}} <br>改变隔离scope的name：<input type="buttom" value="" ng-model="name" class="ng-pristine ng-valid">'
+	        }
+		})
+    	.directive("notemplateDirective", function () {
+	        return {
+	           	restrict:'A',
+	           	link:function(scope,element,attrs){
+	           		scope.sex = '男';
+	           	}
+	        }
+		})
+    	.directive("notemplateIsolatedDirective", function () {
+	        return {
+	        	restrict:'A',
+	            scope: {
+	                name: "@"//单向继承、绑定指令绑定元素的同名属性的值（-个字符串）
+	            },
+	            link:function(scope,element,attrs){
+	            	scope.name = 'xianggq';
+	            	scope.sex = '123';
+	            }
+	        }
+		})
+	</script>
+</html>

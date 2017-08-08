@@ -1,0 +1,4 @@
+{
+  "HEADLINE": "XSS possible!",
+  "PARAGRAPH": "Hello {{username}}!"
+}

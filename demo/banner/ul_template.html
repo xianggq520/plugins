@@ -1,0 +1,8 @@
+<ul class="img" id="img">
+    <li ng-repeat="item in imgArr">
+        <a><img class="banner-img" ng-src="{{item.src}}"/></a>
+    </li>
+</ul>
+<ul class="circle">
+	<li class="circle" ng-repeat="item in imgArr" ng-class="{'light':curr==$index}">{{curr}}</li>
+</ul>

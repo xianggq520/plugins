@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="listExample">
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>ngList例子</title>
+        <script src="../../common/js/angularjs/angular.min.js"></script>
+        <script type="text/javascript">
+        angular.module('listExample', [])
+		.controller('ExampleController', ['$scope', function ($scope) {
+		        $scope.names = ['morpheus', 'neo', 'trinity'];
+		}]);
+        </script>
+</head>
+<body>
+		<p>ng-list="分隔符" 指令可以将输入的字符串自动按分隔符拆分成数组(ng-trim="false"才能生效,ng-trim="true"的时候会将输入字符串按字符拆分例如；输入"aaa",结果为：[a,a,a])</p>
+        <form name="myForm" ng-controller="ExampleController">
+        	List: <input name="namesInput" ng-model="names" ng-list required>
+	        <span class="error" ng-show="myForm.namesInput.$error.required">
+	            Required!
+	        </span>
+        	<br>
+	        <span>names = {{names}}</span>
+	        <br />
+        </form>
+        <textarea ng-model="list" ng-list="&#10;" ng-trim="true"></textarea>
+        {{list}}
+        <br>
+		{{ list | json }}
+</body>
+</html>

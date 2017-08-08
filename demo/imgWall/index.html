@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>炫酷照片墙css3动画</title>
+    <style>
+        .wrap-container {
+            position: relative;
+            width:800px;
+            height: 400px;
+            margin: 50px auto;
+        }
+        #imgWrap {
+            position: absolute;
+            /*width:800px;
+            height: 400px;
+            margin: 50px auto;*/
+            perspective: 800px;
+            top:0;
+            left: 0;
+            z-index: 1;
+        }
+        .mask-layer {
+            position: absolute;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+        }
+        #imgWrap img {
+            width: 80px;
+            height: 80px;
+            float : left;
+        }
+        div.btn {
+            width: 100px;
+            text-align: center;
+            font: 16px/40px "微软雅黑";
+            color: #fff;
+            padding: 0 20px;
+            background: rgb(0,100,0);
+            margin: 0 auto;
+            border-radius:  5px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            cursor: pointer;
+        }
+        .clearfix:before,.clearfix:after {
+            content: "";
+            display: table;
+        }
+        .clearfix:after {
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap-container">
+    <div id="imgWrap" class="clearfix">
+        <img src="images/2.jpg">
+        <img src="images/3.jpg">
+        <img src="images/1.jpg">
+        <img src="images/4.jpg">
+        <img src="images/5.jpg">
+        <img src="images/6.jpg">
+        <img src="images/8.jpg">
+        <img src="images/7.jpg">
+        <img src="images/9.jpg">
+        <img src="images/10.jpg">
+        <img src="images/15.jpg">
+        <img src="images/11.jpg">
+        <img src="images/14.jpg">
+        <img src="images/13.jpg">
+        <img src="images/12.jpg">
+        <img src="images/23.jpg">
+        <img src="images/17.jpg">
+        <img src="images/16.jpg">
+        <img src="images/19.jpg">
+        <img src="images/18.jpg">
+        <img src="images/21.jpg">
+        <img src="images/22.jpg">
+        <img src="images/24.jpg">
+        <img src="images/28.jpg">
+        <img src="images/25.jpg">
+        <img src="images/26.jpg">
+        <img src="images/27.jpg">
+        <img src="images/29.jpg">
+        <img src="images/30.jpg">
+        <img src="images/33.jpg">
+        <img src="images/34.jpg">
+        <img src="images/31.jpg">
+        <img src="images/32.jpg">
+        <img src="images/20.jpg">
+        <img src="images/36.jpg">
+        <img src="images/35.jpg">
+        <img src="images/38.jpg">
+        <img src="images/39.jpg">
+        <img src="images/41.jpg">
+        <img src="images/37.jpg">
+        <img src="images/40.jpg">
+        <img src="images/48.jpg">
+        <img src="images/42.jpg">
+        <img src="images/50.jpg">
+        <img src="images/45.jpg">
+        <img src="images/43.jpg">
+        <img src="images/46.jpg">
+        <img src="images/47.jpg">
+        <img src="images/49.jpg">
+        <img src="images/44.jpg">
+    </div>
+    <div id="mask-layer" class="mask-layer"></div>
+</div>
+<script>
+    window.onload = function () {
+        var imgWrap = document.getElementById('imgWrap');
+        var images = document.querySelectorAll('img');
+        var maskLayer = document.getElementById('mask-layer');
+        var isProcess = false;
+        var isHover = false;
+        var secondAnimationEndCount,thirdAnimationEndCount;
+        //给遮罩层添加事件
+        maskLayer&&maskLayer.addEventListener('mouseover',animationHandler,false);
+        maskLayer&&maskLayer.addEventListener('mouseout',function(){
+            isHover = false;
+        },false);
+        /*动画处理函数*/
+        function animationHandler() {
+            if(isHover){
+                return;
+            }
+            isHover = true;
+            if(isProcess){
+               return;
+            }
+            isProcess = true;
+            secondAnimationEndCount = 0;
+            thirdAnimationEndCount = 0;
+            for(var i = 0;i<images.length;i++){
+                //匿名函数自执行
+                (function(i){
+                    //延时每一个图片的动画效果
+                    setTimeout(function(){
+                        _img_animation(images[i],'1s',function () {
+                            this.style.transform = 'scale(0)';
+                        },function () {
+                            //第一个动画执行完后，再执行第二个动画
+                            _img_animation(this,'1s',function () {
+                                this.style.transform = 'scale(1)';
+                                this.style.opacity = 0;
+                            },function () {
+                                secondAnimationEndCount++ ;
+                                //全部图片的前两个动画都完成后执行第三个动画效果
+                                if(secondAnimationEndCount==images.length){
+                                    //调用下一个动画函数
+                                    _img_reverse();
+                                }
+                            });
+                        })
+                    },Math.random()*1000);
+                })(i);
+            }
+        }
+        function _img_reverse(){
+            for(var i = 0;i<images.length;i++){
+                //设置过渡属性不过渡
+                images[i].style.transition = '';
+                //图片动画的初始状态 向后移动一段距离，以便后续的翻转动画
+                images[i].style.transform = 'rotateY(0deg) translateZ(-' + (Math.random()*500) +'px)';
+
+                (function(i){
+                    setTimeout(function(){
+                        _img_animation(images[i],'1s',function(){
+                            this.style.opacity = 1;
+                            this.style.transform = 'rotateY(-360deg) translateZ(0)';
+                        },function () {
+                            thirdAnimationEndCount++;
+                            if(thirdAnimationEndCount==images.length){
+                                isProcess = false;
+                            }
+                        })
+                    },Math.random()*1000);
+                })(i);
+            }
+        }
+        /*
+        * 照片过渡动画效果处理函数
+        * obj ：运动的对象
+        * transitionTime ：过度时间
+        * fn ：设置需要过度的属性
+        * callback : 过度效果完成后的回调函数
+        * */
+        function _img_animation(obj,transitionTime,fn,callback){
+            //记录回调函数是否调用,当 fn 设置多个过渡属性时，每个过渡属性过渡完成都将触发transitionend事件，应该避免重复调用回调函数
+            var called = false;
+            obj.style.transition = transitionTime;
+            //设置运动对象的过度属性
+            fn.call(obj);
+            //调用回调函数 监听过渡效果完成事件 transitionend
+            obj.addEventListener('transitionend',function () {
+                if(!called){
+                    callback&&callback.call(obj);
+                    called = true;
+                }
+            },false);//冒泡阶段捕获  false
+        }
+    }
+
+</script>
+</body>
+</html>

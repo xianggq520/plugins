@@ -1,0 +1,284 @@
+/*
+
+利用koala实时编译.scss文件为.css文件，利于快捷调整样式
+
+*/
+
+/*定义变量*/
+$sidebar-width: 35px;
+$sidebar-bg-color:#e1e1e1;
+$sidebar-translate-value:120px;
+
+$nav-content-width:200px;
+$nav-content-bg-color:#c2c2c2;
+$nav-content-translate-value : 250px;
+
+$closeBar-bottom:30px;
+$closeBar-translate-value:160px;
+$closeBar-rotate:405deg;
+$closeBar-init-scale:1.0;
+$closeBar-scale:1.2;
+
+/*定义函数*/
+@mixin setOpacity($opacityValue){
+  opacity: $opacityValue;
+  filter: alpha(opacity = $opacityValue * 100);
+}
+@mixin transform($transform){
+  -webkit-transform: $transform;
+  -moz-transform: $transform;
+  -ms-transform: $transform;
+  -o-transform: $transform;
+  transform: $transform;
+}
+
+body {
+  font-family: 'Microsoft YaHei','Open Sans', 'trebuchet ms', arial, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+.sidebar {
+  position: absolute;
+  width: $sidebar-width;
+  min-height: 100%;
+  background-color: $sidebar-bg-color;
+  padding-top: 200px;
+  z-index: 100;
+}
+.menu-item {
+  font-size: 12px;
+  text-align: center;
+  margin-top: 15px;
+  line-height: 12px;
+  cursor:pointer;
+}
+.closebar {
+  width: $sidebar-width;
+  position: absolute;
+  bottom: $closeBar-bottom;
+  text-align: center;
+  cursor: pointer;
+}
+.nav-content {
+  position: fixed;
+  width:$nav-content-width;
+  min-height: 100%;
+  top: 0;
+  background-color: $nav-content-bg-color;
+  z-index: 99;
+  @include setOpacity(0);
+}
+.content-closebar {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+}
+
+/* 展开动画 */
+@-webkit-keyframes unfold {
+  from {
+    @include setOpacity(0);
+  }
+  to {
+    @include setOpacity(1);
+    @include transform(translateX($sidebar-translate-value));
+  }
+}
+@keyframes unfold {
+  from {
+    @include setOpacity(0);
+  }
+  to {
+    @include setOpacity(1);
+    @include transform(translateX($sidebar-translate-value));
+  }
+}
+.sidebar-unfolded {
+  -webkit-animation-name            : unfold;
+  animation-name            : unfold;
+  -webkit-animation-duration        : 1s;
+  animation-duration        : 1s;
+  -webkit-animation-iteration-count : 1;
+  animation-iteration-count : 1;
+  -webkit-animation-fill-mode : forwards;
+  animation-fill-mode : forwards;
+}
+/* sidebar折叠动画 */
+@-webkit-keyframes collapse {
+  from {
+
+  }
+  to {
+    @include transform(translateX(- $sidebar-translate-value));
+  }
+}
+
+@keyframes collapse {
+  from {
+
+  }
+  to {
+    @include transform(translateX(- $sidebar-translate-value));
+  }
+}
+.sidebar-collapsed {
+  -webkit-animation-name            : collapse;
+  animation-name            : collapse;
+  -webkit-animation-duration        : 1s;
+  animation-duration        : 1s;
+  -webkit-animation-iteration-count : 1;
+  animation-iteration-count : 1;
+  -webkit-animation-fill-mode : forwards;
+  animation-fill-mode : forwards;
+}
+
+/* sidebar关闭按钮 */
+@-webkit-keyframes cmr {
+  from {
+
+  }
+  to {
+    @include transform(translateX($closeBar-translate-value) rotate($closeBar-rotate) scale($closeBar-scale));
+  }
+}
+@keyframes cmr {
+  from {
+
+  }
+  to {
+    @include transform(translateX($closeBar-translate-value) rotate($closeBar-rotate) scale($closeBar-scale));
+  }
+}
+@-webkit-keyframes cml {
+  from {
+    @include transform(scale($closeBar-scale));
+  }
+  to {
+    @include transform(translateX(- $closeBar-translate-value) rotate(- $closeBar-rotate) scale($closeBar-init-scale));
+  }
+}
+@keyframes cml {
+  from {
+    @include transform(scale($closeBar-scale));
+  }
+  to {
+    @include transform(translateX(- $closeBar-translate-value) rotate(- $closeBar-rotate) scale($closeBar-init-scale));
+  }
+}
+.closebar-moveLeft {
+  -webkit-animation-name            : cml;
+  animation-name            : cml;
+  -webkit-animation-duration        : 1s;
+  animation-duration        : 1s;
+  -webkit-animation-iteration-count : 1;
+  animation-iteration-count : 1;
+  -webkit-animation-fill-mode : forwards;
+  animation-fill-mode : forwards;
+}
+.closebar-moveRight {
+  -webkit-animation-name            : cmr;
+  animation-name            : cmr;
+  -webkit-animation-duration        : 1s;
+  animation-duration        : 1s;
+  -webkit-animation-iteration-count : 1;
+  animation-iteration-count : 1;
+  -webkit-animation-fill-mode : forwards;
+  animation-fill-mode : forwards;
+}
+/* 内容区*/
+/* 左侧淡入 */
+@-webkit-keyframes fadeInLeft {
+  from {
+    @include setOpacity(0);
+  }
+  to {
+    @include setOpacity(1);
+    @include transform(translateX($sidebar-translate-value));
+  }
+}
+@keyframes fadeInLeft {
+  from {
+    @include setOpacity(0);
+  }
+  to {
+    @include setOpacity(1);
+    @include transform(translateX($sidebar-translate-value));
+  }
+}
+.fadeIn-left {
+  -webkit-animation-name            : fadeInLeft;
+  animation-name            : fadeInLeft;
+  -webkit-animation-duration        : 1s;
+  animation-duration        : 1s;
+  -webkit-animation-iteration-count : 1;
+  animation-iteration-count : 1;
+  -webkit-animation-fill-mode : forwards;
+  animation-fill-mode : forwards;
+}
+/* 从左侧fade out  */
+@-webkit-keyframes fadeOutLeft {
+  from {
+    @include setOpacity(1);
+  }
+  to {
+    @include setOpacity(0);
+    @include transform(translateX(- $sidebar-translate-value));
+  }
+}
+@keyframes fadeOutLeft {
+  from {
+    @include setOpacity(1);
+  }
+  to {
+    @include setOpacity(0);
+    @include transform(translateX(- $sidebar-translate-value));
+  }
+}
+.fadeOut-left {
+  -webkit-animation-name            : fadeOutLeft;
+  animation-name            : fadeOutLeft;
+  -webkit-animation-duration        : 1s;
+  animation-duration        : 1s;
+  -webkit-animation-iteration-count : 1;
+  animation-iteration-count : 1;
+  -webkit-animation-fill-mode : forwards;
+  animation-fill-mode : forwards;
+}
+/* 从左侧fade out  */
+@-webkit-keyframes fadeInBottom {
+  from {
+    @include setOpacity(0);
+  }
+  to {
+    @include setOpacity(1);
+    @include transform(translateY(- $nav-content-translate-value));
+  }
+}
+@keyframes fadeInBottom {
+  from {
+    @include setOpacity(0);
+  }
+  to {
+    @include setOpacity(1);
+    @include transform(translateY(- $nav-content-translate-value));
+  }
+}
+.fadeIn-bottom {
+  -webkit-animation-name            : fadeInBottom;
+  animation-name            : fadeInBottom;
+  -webkit-animation-duration        : 1s;
+  animation-duration        : 1s;
+  -webkit-animation-iteration-count : 1;
+  animation-iteration-count : 1;
+  -webkit-animation-fill-mode : forwards;
+  animation-fill-mode : forwards;
+}

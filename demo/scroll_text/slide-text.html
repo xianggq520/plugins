@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="tip">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="jquery.min.js"></script>
+    <script src="angular.min.js"></script>
+    <style type="text/css">
+        *{margin: 0px;padding: 0px;}
+        .slide {
+            position: relative;height:49px;width: 200px;margin: 0 auto; margin-top: 50px;overflow: hidden}
+        .slide li {opacity:1;height: 49px;line-height: 49px;text-align: left;padding: 0 10px;font-size: 16px;list-style: none;cursor: pointer;}
+        .slide li:hover{background: #ccc;}
+        .slide ul {
+             
+            height: 49px;
+
+        }
+    </style>
+</head>
+
+
+<body >
+<div ng-controller = "TipController">
+    <div class="slide">
+        <div scroll-text  scroll-data="scrollData"></div>
+    </div>
+</div>
+
+
+
+
+
+<script type="text/javascript">
+    var app =angular.module("tip",[]);
+    app.controller("TipController",function($scope){
+// 数据可以根据自己使用情况更换
+        $scope.scrollData = [
+            {option : "这个是第一条数据"},
+            {option : "这个是第二条数据"},
+            {option : "这个是第三条数据"},
+            {option : "这个是第四条数据"},
+            {option : "这个是第五条数据"},
+            {option : "这个是第六条数据"}
+        ]
+    })
+            .directive("scrollText",function($interval){
+                return {
+                    restrict : 'A',
+                    replace : true,
+                    scope : {
+                        id : "@",
+                        scrollData : "="
+                    },
+                    template : "<ul id='scroll-ul' class='scroll-ul'><li ng-repeat ='item in scrollData' ng-bind='item.option'></li></ul>",
+                    link : function(scope,element,attrs) {
+                        angular.element(document).ready(function(){
+                            var ul = angular.element(document.getElementById("scroll-ul")),
+                                i = 0,timer,liLength = ul.children("li").length,
+                                liHeight = ul.children("li").height();
+                            ul.html(ul.html() + ul.html());
+                            timer = $interval(slide,3000);
+                            function slide(){
+                                if (parseInt(ul.css("margin-top")) > (-liLength * liHeight)) {
+                                    i++;
+                                    ul.animate({
+                                        marginTop : -liHeight * i + "px"
+
+                                    },"slow");
+                                    ul.children('li').eq(i).animate(function(){
+                                        opacity:1
+                                    },"slow");
+                                } else {
+                                    i = 0;
+                                    ul.css("margin-top","0px");
+                                }
+                            }
+// 清除定时器
+                            $(ul).hover(function(){
+                                $interval.cancel(timer);
+                                timer = undefined;
+                            },function(){
+                                if(!angular.isDefined(timer)){
+                                    timer = $interval(slide,3000);
+                                }
+                            })
+                        })
+                    }
+                }
+            })
+</script>
+</body>
+</html>

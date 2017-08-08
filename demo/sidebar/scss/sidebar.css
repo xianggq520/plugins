@@ -1,0 +1,303 @@
+@charset "UTF-8";
+/*
+
+利用koala实时编译.scss文件为.css文件，利于快捷调整样式
+
+*/
+/*定义变量*/
+/*定义函数*/
+body {
+  font-family: 'Microsoft YaHei','Open Sans', 'trebuchet ms', arial, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+.sidebar {
+  position: absolute;
+  width: 35px;
+  min-height: 100%;
+  background-color: #e1e1e1;
+  padding-top: 200px;
+  z-index: 100;
+}
+
+.menu-item {
+  font-size: 12px;
+  text-align: center;
+  margin-top: 15px;
+  line-height: 12px;
+  cursor: pointer;
+}
+
+.closebar {
+  width: 35px;
+  position: absolute;
+  bottom: 30px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.nav-content {
+  position: fixed;
+  width: 200px;
+  min-height: 100%;
+  top: 0;
+  background-color: #c2c2c2;
+  z-index: 99;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+
+.content-closebar {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+}
+
+/* 展开动画 */
+@-webkit-keyframes unfold {
+  from {
+    opacity: 0;
+    filter: alpha(opacity=0);
+  }
+  to {
+    opacity: 1;
+    filter: alpha(opacity=100);
+    -webkit-transform: translateX(120px);
+    -ms-transform: translateX(120px);
+    transform: translateX(120px);
+  }
+}
+@keyframes unfold {
+  from {
+    opacity: 0;
+    filter: alpha(opacity=0);
+  }
+  to {
+    opacity: 1;
+    filter: alpha(opacity=100);
+    -webkit-transform: translateX(120px);
+    -ms-transform: translateX(120px);
+    transform: translateX(120px);
+  }
+}
+.sidebar-unfolded {
+  -webkit-animation-name: unfold;
+  animation-name: unfold;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+}
+
+/* sidebar折叠动画 */
+@-webkit-keyframes collapse {
+  to {
+    -webkit-transform: translateX(-120px);
+    -ms-transform: translateX(-120px);
+    transform: translateX(-120px);
+  }
+}
+@keyframes collapse {
+  to {
+    -webkit-transform: translateX(-120px);
+    -ms-transform: translateX(-120px);
+    transform: translateX(-120px);
+  }
+}
+.sidebar-collapsed {
+  -webkit-animation-name: collapse;
+  animation-name: collapse;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+}
+
+/* sidebar关闭按钮 */
+@-webkit-keyframes cmr {
+  to {
+    -webkit-transform: translateX(160px) rotate(405deg) scale(1.2);
+    -ms-transform: translateX(160px) rotate(405deg) scale(1.2);
+    transform: translateX(160px) rotate(405deg) scale(1.2);
+  }
+}
+@keyframes cmr {
+  to {
+    -webkit-transform: translateX(160px) rotate(405deg) scale(1.2);
+    -ms-transform: translateX(160px) rotate(405deg) scale(1.2);
+    transform: translateX(160px) rotate(405deg) scale(1.2);
+  }
+}
+@-webkit-keyframes cml {
+  from {
+    -webkit-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+  to {
+    -webkit-transform: translateX(-160px) rotate(-405deg) scale(1);
+    -ms-transform: translateX(-160px) rotate(-405deg) scale(1);
+    transform: translateX(-160px) rotate(-405deg) scale(1);
+  }
+}
+@keyframes cml {
+  from {
+    -webkit-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+  to {
+    -webkit-transform: translateX(-160px) rotate(-405deg) scale(1);
+    -ms-transform: translateX(-160px) rotate(-405deg) scale(1);
+    transform: translateX(-160px) rotate(-405deg) scale(1);
+  }
+}
+.closebar-moveLeft {
+  -webkit-animation-name: cml;
+  animation-name: cml;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+}
+
+.closebar-moveRight {
+  -webkit-animation-name: cmr;
+  animation-name: cmr;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+}
+
+/* 内容区*/
+/* 左侧淡入 */
+@-webkit-keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    filter: alpha(opacity=0);
+  }
+  to {
+    opacity: 1;
+    filter: alpha(opacity=100);
+    -webkit-transform: translateX(120px);
+    -ms-transform: translateX(120px);
+    transform: translateX(120px);
+  }
+}
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    filter: alpha(opacity=0);
+  }
+  to {
+    opacity: 1;
+    filter: alpha(opacity=100);
+    -webkit-transform: translateX(120px);
+    -ms-transform: translateX(120px);
+    transform: translateX(120px);
+  }
+}
+.fadeIn-left {
+  -webkit-animation-name: fadeInLeft;
+  animation-name: fadeInLeft;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+}
+
+/* 从左侧fade out  */
+@-webkit-keyframes fadeOutLeft {
+  from {
+    opacity: 1;
+    filter: alpha(opacity=100);
+  }
+  to {
+    opacity: 0;
+    filter: alpha(opacity=0);
+    -webkit-transform: translateX(-120px);
+    -ms-transform: translateX(-120px);
+    transform: translateX(-120px);
+  }
+}
+@keyframes fadeOutLeft {
+  from {
+    opacity: 1;
+    filter: alpha(opacity=100);
+  }
+  to {
+    opacity: 0;
+    filter: alpha(opacity=0);
+    -webkit-transform: translateX(-120px);
+    -ms-transform: translateX(-120px);
+    transform: translateX(-120px);
+  }
+}
+.fadeOut-left {
+  -webkit-animation-name: fadeOutLeft;
+  animation-name: fadeOutLeft;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+}
+
+/* 从左侧fade out  */
+@-webkit-keyframes fadeInBottom {
+  from {
+    opacity: 0;
+    filter: alpha(opacity=0);
+  }
+  to {
+    opacity: 1;
+    filter: alpha(opacity=100);
+    -webkit-transform: translateY(-250px);
+    -ms-transform: translateY(-250px);
+    transform: translateY(-250px);
+  }
+}
+@keyframes fadeInBottom {
+  from {
+    opacity: 0;
+    filter: alpha(opacity=0);
+  }
+  to {
+    opacity: 1;
+    filter: alpha(opacity=100);
+    -webkit-transform: translateY(-250px);
+    -ms-transform: translateY(-250px);
+    transform: translateY(-250px);
+  }
+}
+.fadeIn-bottom {
+  -webkit-animation-name: fadeInBottom;
+  animation-name: fadeInBottom;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+}

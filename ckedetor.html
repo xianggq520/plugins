@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html ng-app="app">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="common/ckeditor/ckeditor.js"></script>
+		<script src="common/js/angularjs/angular.min.js"></script>
+	</head>
+	<body ng-controller="MyController">
+		<textarea ckeditor ng-model="topic.content" class="form-control" name="mycontent"></textarea>
+	</body>
+	<script>
+		var app = angular.module("app",[]);
+		app.directive('ckeditor', function() {
+			return {
+			require : '?ngModel',
+			link : function(scope, element, attrs, ngModel) {
+			var ckeditor = CKEDITOR.replace(element[0], {
+			
+			});
+			if (!ngModel) {
+			return;
+			}
+			ckeditor.on('instanceReady', function() {
+			ckeditor.setData(ngModel.$viewValue);
+			});
+			ckeditor.on('pasteState', function() {
+			scope.$apply(function() {
+			ngModel.$setViewValue(ckeditor.getData());
+			});
+			});
+			ngModel.$render = function(value) {
+			ckeditor.setData(ngModel.$viewValue);
+			};
+			}
+			};
+			});
+		app.controller('MyController', function($scope){
+			
+		})
+			 
+	</script>
+	<script>
+		 
+	</script>
+</html>

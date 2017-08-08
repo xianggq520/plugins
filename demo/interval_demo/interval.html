@@ -1,0 +1,76 @@
+
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Question</title>
+        <style>
+            .outer {border:1px solid #000; width:520px; height:300px; position:relative; padding:0; overflow:hidden;}
+            .inner {position:absolute;}
+            .inner div{border:1px solid red; width:118px; height:138px; margin:5px 5px; float:left;}
+        </style>
+    </head>
+    <body>
+        <div class="outer">
+            <div class="inner" id="inner">
+                <div>1</div><div>1</div><div>1</div><div>1</div>
+                <div>2</div><div>2</div><div>2</div><div>2</div>
+                <div>3</div><div>3</div><div>3</div><div>3</div>
+                <div>4</div><div>4</div><div>4</div><div>4</div>
+                <div>5</div><div>5</div><div>5</div><div>5</div>
+                <div>6</div><div>6</div><div>6</div><div>6</div>
+                <div>7</div><div>7</div><div>7</div><div>7</div>
+                <div>8</div><div>8</div><div>8</div><div>8</div>
+                <div>9</div><div>9</div><div>9</div>
+            </div>
+        </div>
+    </body>
+    <script>
+        function startScoll(){
+            var outer = document.getElementById("inner"),timer,mover,tempSub = 15,
+                divs = outer.getElementsByTagName("div");
+                outerH = Math.ceil(divs.length/4)*150;
+ 
+            if(divs.length % 4 !== 0){
+                var temp = 4 - divs.length % 4;
+                for (var i = 0; i < temp; i++) {
+                    outer.appendChild(document.createElement("div"));
+                }
+            }
+ 
+            for(var i = 0; i < 8; i++){
+                outer.appendChild(divs[i].cloneNode(true));
+            }
+ 
+            outer.style.top = "0px";
+            clearInterval(timer);
+            timer  = setInterval(function(){
+				if(tempSub != 15){return false;}
+                    tempSub = 0;
+                    clearInterval(mover);
+                    mover = setInterval(function(){
+                        outer.style.top = delPx(outer.style.top) - 10 + "px";
+                        tempSub++;
+                        
+                        if(tempSub == 15){
+                            clearInterval(mover);
+                            if(delPx(outer.style.top) == -outerH){
+                                outer.style.top = "0px";
+                                return false;
+                            }
+                        }
+                    },30);
+              
+            },3000);
+              
+            function delPx(str){
+                return parseInt(str.substring(0, str.length - 2));
+            }
+        }
+        startScoll();
+    </script>
+</html>
+
+

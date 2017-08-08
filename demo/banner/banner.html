@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="bannerApp">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../../common/js/angularjs/angular.min.js"></script>
+    <script src="../../common/js/jquery/jquery.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        ul {
+            list-style: none;
+        }
+        a {
+            text-decoration: none;
+            background-color: transparent;
+        }
+        img{
+            border: 0;
+            vertical-align: middle;
+        }
+        .baner-container {
+            position: relative;
+            width: 280px;
+            height: 210px;
+            margin: 40px auto;
+            overflow: hidden;
+        }
+        .baner-container ul.img {
+            position: absolute;
+            width:280px;
+            height: 210px;
+            left: 0;
+            top: 0;
+            /*font-size: 0;*/
+        }
+        .baner-container ul.img li {
+            display: inline-block;
+            vertical-align: middle;
+            width: 280px;
+            height: 210px;
+            float: left;
+            opacity: 1;
+        }
+        .baner-container ul.img li a{
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .banner-img {
+            width: 280px;
+            height: 210px;
+        }
+        .baner-container ul.circle {
+            position: relative;
+            margin: 15px auto;
+        }
+        .baner-container ul.circle li.circle {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            border: 1px solid red;
+            border-radius: 15px;
+            float: left;
+            margin-right: 10px;
+        }
+        .light {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body ng-controller="bannerController">
+    <div class="baner-container" banner-img img-arr="imgSrcArr"></div>
+<script>
+
+    angular.module('bannerApp',[])
+            .controller('bannerController',['$scope','$interval', function($scope,$interval){
+                $scope.imgSrcArr = [ { src:'../../common/images/1.jpg' }, { src:'../../common/images/2.jpg' },{ src:'../../common/images/1.jpg' }];
+ 
+            }])
+            .directive('bannerImg', ['$interval', function($interval){
+                return {
+                    restrict:'A',
+                   	scope:{
+                    	imgArr:'=',
+                    },
+                    templateUrl:'ul_template.html',
+                    link:function(scope,element,attrs){
+                        scope.curr = 0; 
+                        var ul, timer;
+                        ul = angular.element(document.getElementById("img"));
+                        ul.css("width", scope.imgArr.length * 280 + "px");
+                        if(!angular.isDefined(timer)){
+                            timer = $interval(function(){
+                                slide();
+                            },3000);
+                        }
+                        function slide(){
+                            ul.css('left', (- (++scope.curr) * 280) + 'px');
+                            ul.css('opacity', 0.6);
+                            $(ul).animate({
+                            	opacity:1
+                            },
+                            1000,
+                            function(){
+                            	if(scope.curr >= (scope.imgArr.length-1)) scope.curr = -1; 
+                            });
+                        }
+                    }
+                }
+            }])
+</script>
+</body>
+</html>

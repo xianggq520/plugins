@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			#small{
+				width: 300px;
+				height: 300px;
+				float: left;
+				margin-right: 15px;
+				position: relative;
+				overflow: hidden;
+			}
+			#small img{
+				width: 300px;
+				height: 300px;
+			}
+			#small div{
+				width: 100px;
+				height: 100px;
+				background: rgba(255,255,0,0.5);
+				position: absolute;
+				left: 0;
+				top: 0;
+				cursor: move;
+				display: none;
+			}
+			#big{
+				width: 500px;
+				height: 500px;
+				float: left;
+				overflow: hidden;
+				position: relative;
+				display: none;
+			}
+			#big img{
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+		</style>
+		<script>
+			window.onload=function(){
+				var small=document.getElementById("small");
+				var moveBox=document.querySelector("#small div");
+				var big=document.getElementById("big");
+				var bigImg=document.querySelector("#big img");
+				var e_point_maxX = small.offsetWidth + small.offsetLeft;
+				var e_point_minX = small.offsetLeft;
+				var e_point_maxY = small.offsetHeight + small.offsetTop;
+				var e_point_minY = small.offsetTop;
+				var inScope = false;
+				//给左边的div添加事件(鼠标移入事件)
+				small.onmouseover=function(e){
+					moveBox.style.display='block';
+					big.style.display='block';
+				};
+				
+				//鼠标移出事件
+				small.onmouseout=function(){
+					moveBox.style.display='none';
+					big.style.display='none';
+				};
+				
+				//鼠标走的时候，让黄色的块跟着走
+				small.onmousemove=function(ev){
+					//黄色块的left值
+					var l=ev.clientX-small.offsetLeft-moveBox.offsetWidth/2;	
+					//黄色块的top值
+					var t=ev.clientY-small.offsetTop-moveBox.offsetHeight/2;		
+			 
+					/*
+					 * 方法一：按比例粗略计算右侧图片移动
+					 * 
+					 * 左边黄色块走的比例与右边大图走的比例是一样的
+					 * 求比例
+					 * 	比例=已经走的距离/总距离(父级的宽度-自己的宽度)
+					 * 
+					 * 	大图走的位置就是要算已经走的距离这个值
+					 * 	已经走的距离=比例*总距离(父级的宽度-自己的宽度)
+					 */
+					//下面的是X轴与Y轴走的比例
+					var scaleX=l/(small.offsetWidth-moveBox.offsetWidth);
+					var scaleY=t/(small.offsetHeight-moveBox.offsetHeight);
+					
+					bigImg.style.left=scaleX*(big.offsetWidth-bigImg.offsetWidth)+'px';
+					bigImg.style.top=scaleY*(big.offsetHeight-bigImg.offsetHeight)+'px';
+					
+					moveBox.style.left=l+'px';
+					moveBox.style.top=t+'px';
+					
+					/*
+					 *方法二：用css的clip属性
+					 * 
+					 * 
+					 * */
+					
+					
+				};
+			};
+		</script>
+	</head>
+	<body>
+		<div id="small">
+			<img src="images/big.jpg"/>
+			<div></div>
+		</div>
+		<div id="big">
+			<img src="images/big.jpg"/>
+		</div>
+		
+		<!--<div id="box1" style="width: 100px; height: 100px; background: red; margin: 200px 0 0 500px;"></div>
+		<script>
+			var box1=document.getElementById("box1");
+			box1.onclick=function(ev){
+				console.log(ev);
+			}
+		</script>-->
+	</body>
+</html>

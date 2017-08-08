@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas绘制泡泡</title>
+</head>
+<body>
+<canvas id="canvas" class="canvas"></canvas>
+<script>
+    window.onload = function () {
+        var domCanvas = document.getElementById("canvas");
+        var context = domCanvas.getContext('2d');
+        var bubbles = [];
+        var colors = ['#25A17E','#3CCB2E','#CB2E9D','#DB9CE1','#61339B','#2A64BC','#69d2d7','#a7dbd8','#e0e4cc','#69d2d7','#fa6900','#ff4e50','#f9d423'];
+        var timer;
+        var noTimer = true;
+        domCanvas.width = window.innerWidth;
+        domCanvas.height = window.innerHeight - 10;
+        domCanvas.onmousemove = function(e){
+
+            for(var i = 0;i<2;i++){
+                var bubble = {
+                    x:myRandom(-5,5) + e.clientX,
+                    y:myRandom(-5,5) + e.clientY + window.pageYOffset,//加上window的Y轴滚动距离
+                    r:myRandom(10,25),
+                    vx:Math.random() - 0.5 ,
+                    vy:Math.random() - 0.5 ,
+                    color: colors[myRandom(0,colors.length-1)],
+                    number:bubbles.length
+                }
+                bubbles.push(bubble);
+                if(bubbles.length > 300){
+                    bubbles.shift();
+                }
+            }
+            if(noTimer){
+                timer = setInterval(drawBubbles,15);
+                noTimer = false;
+            }
+
+        }
+        //随机函数
+        function myRandom(min,max){
+            return Math.round(min+(max-min)*Math.random());
+        }
+        //绘制泡泡的函数
+        function drawBubble(bubble){
+            context.beginPath();
+            context.arc(bubble.x,bubble.y,bubble.r,0,Math.PI*2);
+            context.fillStyle = bubble.color;
+            context.globalCompositeOperation = "lighter";//高亮显示叠加位置
+            context.fill();
+        }
+        function drawBubbles() {
+            context.clearRect(0,0,domCanvas.width,domCanvas.height);
+            for(var i = 0;i < bubbles.length;i++){
+                bubbles[i].x += bubbles[i].vx * 8;
+                bubbles[i].y += bubbles[i].vy * 8;
+                bubbles[i].r = bubbles[i].r*0.94;
+                bubbles[i].index = i;
+                console.log(bubbles[i].number+"-----number");
+                if(bubbles[i].r<1){
+                    console.log(bubbles[i].number+"----begin");
+                    bubbles.splice(bubbles[i].index,1);
+                    console.log(bubbles[i].number+"----end");
+                    i--;
+                    if(!bubbles.length){
+                        clearInterval(timer);
+                        noTimer = true;
+                    }
+                    continue;
+                }
+                drawBubble(bubbles[i]);
+            }
+        }
+
+        window.onresize = function(){
+            domCanvas.width = window.innerWidth;
+            domCanvas.height = window.innerHeight - 10;
+        }
+    }
+</script>
+</body>
+</html>

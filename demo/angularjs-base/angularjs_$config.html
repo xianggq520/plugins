@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="listExample">
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>ngList例子</title>
+        <script src="../../common/js/angularjs/angular.min.js"></script>
+        <script type="text/javascript">
+        //写cookies
+function setCookie(c_name, value, expiredays){
+ 　　　　var exdate=new Date();
+　　　　exdate.setDate(exdate.getDate() + expiredays);
+　　　　document.cookie=c_name+ "=" + escape(value) + ((expiredays==null) ? "" : ";expires="+exdate.toGMTString())+";path=/";
+ 　　}
+ 
+//读取cookies
+function getCookie(name)
+{
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+ 
+    if(arr=document.cookie.match(reg))
+ 
+        return (arr[2]);
+    else
+        return null;
+}
+/*获取url参数 start*/
+function request(strParame) { 
+var args = new Object( ); 
+var query = location.search.substring(1); 
+
+var pairs = query.split("&"); // Break at ampersand 
+for(var i = 0; i < pairs.length; i++) { 
+var pos = pairs[i].indexOf('='); 
+if (pos == -1) continue; 
+var argname = pairs[i].substring(0,pos); 
+var value = pairs[i].substring(pos+1); 
+value = decodeURIComponent(value); 
+args[argname] = value; 
+} 
+return args[strParame]; 
+}
+var env = angular.module('env', [])
+env.service('ENV', function (){
+    return {
+        
+        //测试
+ 		baseUrlPost:'http://test.nextev.moxueyuan.net:9080/enterpriseuniversity/services/api/postMethod',
+		baseUrl:'http://test.nextev.moxueyuan.net:9080/enterpriseuniversity/services/api/getMethod?callback=JSON_CALLBACK&',
+		baseVideoUrl:'http://test.nextev.moxueyuan.net:9080/enterpriseuniversity/',
+		loginUrl:'https://ssotest.nevqa.com:2443/login'
+		 
+    }
+});
+var jsonpProviders = angular.module('jsonp.handler',['env'])
+.factory('$jsonpHandler', ['$http', 'ENV', function($http, ENV){
+	var token = getCookie("token");
+	
+	return {
+		checkToken : function(){
+			return ENV.baseUrl + "apiName=" + "QUERY_USER_BY_TOKEN" + '&token=' + token + "&apiType=" + "global";
+		}
+		
+		
+		
+		
+	}
+}]) 
+        angular.module('listExample', ['jsonp.handler'])
+         
+ 
+		.controller('ExampleController', ['$scope', '$jsonpHandler',function ($scope, $jsonpHandler) {
+		    console.log($jsonpHandler.checkToken()); 
+		  	    
+		}]);
+        </script>
+</head>
+<body ng-controller="ExampleController">
+		 
+		
+</body>
+</html>

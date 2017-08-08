@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="tip">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="jquery-2.1.1.min.js"></script>
+    <script src="angular.min.js"></script>
+    <style type="text/css">
+        *{margin: 0px;padding: 0px;}
+        .slide {width: 200px;height:200px;border:1px solid #dcdcdc;margin: 0 auto;margin-top: 50px;overflow: hidden;}
+        .slide li {height: 49px;line-height: 49px;text-align: left;padding: 0 10px;font-size: 16px;list-style: none;border-bottom: 1px dashed #dcdcdc;cursor: pointer;}
+        .slide li:hover{background: #ccc;}
+    </style>
+</head>
+
+
+<body >
+<div ng-controller = "TipController">
+    <div class="slide">
+        <ul class="slideUl">
+            <!-- 指令 -->
+            <slide-follow id="slide" dataset-data = "datasetData"></slide-follow>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+<script type="text/javascript">
+    var app =angular.module("tip",[]);
+    app.controller("TipController",function($scope){
+// 数据可以根据自己使用情况更换
+        $scope.datasetData = [
+            {option : "这个是第一条数据"},
+            {option : "这个是第二条数据"},
+            {option : "这个是第三条数据"},
+            {option : "这个是第四条数据"},
+            {option : "这个是第五条数据"},
+            {option : "这个是第六条数据"}
+        ]
+    })
+            .directive("slideFollow",function($timeout){
+                return {
+                    restrict : 'E',
+                    replace : true,
+                    scope : {
+                        id : "@",
+                        datasetData : "="
+                    },
+                    template : '<li ng-repeat = "data in datasetData" ng-bind="data.option"></li>',
+                    link : function(scope,elem,attrs) {
+                        $timeout(function(){
+                            var className = $("." + $(elem).parent()[0].className);
+                            var i = 0,sh;
+                            var liLength = className.children("li").length;
+                            var liHeight = className.children("li").height() + parseInt(className.children("li").css('border-bottom-width'));
+                            className.html(className.html() + className.html());
+// 开启定时器
+                            sh = setInterval(slide,4000);
+                            function slide(){
+                                if (parseInt(className.css("margin-top")) > (-liLength * liHeight)) {
+                                    i++;
+                                    className.animate({
+                                        marginTop : -liHeight * i + "px"
+                                    },"slow");
+                                } else {
+                                    i = 0;
+                                    className.css("margin-top","0px");
+                                }
+                            }
+// 清除定时器
+                            className.hover(function(){
+                                clearInterval(sh);
+                            },function(){
+                                clearInterval(sh);
+                                sh = setInterval(slide,4000);
+                            })
+                        },0)
+                    }
+                }
+            })
+</script>
+</body>
+</html>

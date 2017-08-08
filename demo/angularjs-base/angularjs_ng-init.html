@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="initExample">
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>ngInit例子</title>
+        <script src="../../common/js/angularjs/angular.min.js"></script>
+        <script type="text/javascript">
+        angular.module('initExample', [])
+        .controller('ExampleController', ['$scope', function ($scope) {
+        $scope.list = [['a', 'b'], ['c', 'd']];
+        }]);
+        </script>
+</head>
+<body>
+		<p>!ng-init没有创建新的$scope对象</p>
+        <div ng-controller="ExampleController">
+        <div ng-repeat="innerList in list" ng-init="outerIndex = $index;a = 0;b=1">
+        	{{a+"~~"}}<br> 
+        	{{b+"####"}}
+	        <div ng-repeat="value in innerList" ng-init="innerIndex = $index;a=1;$parent.b = 0">
+	        	<span class="example-init">a = {{a}}、list[ {{outerIndex}} ][ {{innerIndex}} ] = {{value}};</span>
+	        </div>
+        	{{"a>>>>"+a}}
+        	{{"b>>>>"+b}}
+        </div>
+        </div>
+</body>
+</html>

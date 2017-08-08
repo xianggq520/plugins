@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="app">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>ngClassEven例子</title>
+        <script src="../../common/js/angularjs/angular.min.js"></script>
+        <style type="text/css">
+        .odd {
+        color: red;
+        }
+        .even {
+        color: blue;
+        }
+        </style>
+</head>
+<body ng-controller="myController">
+        <ol ng-init="names=['John', 'Mary', 'Cate', 'Suz']">
+        	
+        <li ng-repeat="name in names" ng-class-odd="odd" ng-class-even="even">
+       
+                {{name}} &nbsp; &nbsp; &nbsp;
+       
+        </li>
+        
+        
+        </ol>
+        <ul>
+        	 <li ng-repeat="name in names" ng-class-odd="'odd'" ng-class-even="'even'">
+       
+                {{name}} &nbsp; &nbsp; &nbsp;
+       
+        </li>	
+        </ul>
+       
+</body>
+<script>
+	angular.module('app',[]).controller('myController',['$scope', function($scope){
+		$scope.odd = 'odd';
+		$scope.even = "even";
+	}])
+</script>
+</html>

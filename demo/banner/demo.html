@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../../common/js/angularjs/angular.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        ul {
+            position: relative;
+            list-style: none;
+        }
+        .container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+        .mdiv {
+            display: inline-block;
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            top: 0;
+            left: 0;
+            border: 1px solid red;
+        }
+        .circle {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            float: left;
+            margin-right: 5px;
+            border: 1px solid #fff;
+            border-radius: 6px;
+        }
+        .c-ul {
+            position: absolute;
+            display: block;
+            margin: 0 auto;
+            bottom: 10px;
+        }
+        .clearfix:before ,.clearfix:after{
+            content: '';
+            display: table;
+        }
+
+        .clearfix:after {
+            clear: both;
+        }
+        .light {
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body >
+<div class="container clearfix" ng-controller="ctl">
+    <ul>
+        <li class="mdiv" ng-repeat="item in divStyleArr" ng-init="initInterval($index);" ng-style="item"></li>
+    </ul>
+    <ul class="c-ul">
+        <li class="circle " ng-class="{'light':item.opacity>=0.5}" ng-repeat="item in divStyleArr"></li>
+    </ul>
+</div>
+<script>
+    var app = angular.module('app',[])
+            .controller('ctl',function($scope,$interval,$timeout){
+                console.log('ctl....');
+                $scope.imgArr = ['1.jpg','2.jpg'];
+                $scope.divStyleArr = [];
+                for(var i in $scope.imgArr){
+                    $scope.divStyleArr.push( {
+                        'background': 'url('+$scope.imgArr[i]+') no-repeat  center top',
+                        'background-size':'cover',
+                        'opacity': i==0 ? 1 : 0
+                    });
+                }
+                var index = 0 ;
+                $scope.initInterval = function ($index){
+                    if($index==$scope.divStyleArr.length-1){
+                        console.log(1111111)
+                        $interval(function(){
+                            if(index >= $scope.divStyleArr.length){
+                                index = 0;
+                            }
+                            if(index!=0){
+                                (function(i){
+                                   var a = $interval(function(){
+                                       if($scope.divStyleArr[i-1].opacity <= 0.1){
+                                           $scope.divStyleArr[i-1].opacity = 0;
+                                           $interval.cancel(a);
+                                       }else{
+                                           $scope.divStyleArr[i-1].opacity-= 0.1  ;
+                                       }
+
+                                        //$scope.divStyleArr[-1].opacity <0.5 ? !($scope.divStyleArr[i-1].opacity=0)&&$interval.cancel(a):$scope.divStyleArr[i-1].opacity-= 0.1  ;
+                                    },40);
+                                })(index);
+                            }else{
+                                (function(){
+                                    var a = $interval(function(){
+                                        if($scope.divStyleArr[$scope.divStyleArr.length-1].opacity <= 0.1){
+                                            $scope.divStyleArr[$scope.divStyleArr.length-1].opacity = 0;
+                                            $interval.cancel(a);
+                                        }else{
+                                            $scope.divStyleArr[$scope.divStyleArr.length-1].opacity -= 0.1;
+                                        }
+                                        //$scope.divStyleArr[$scope.divStyleArr.length-1].opacity <0.5 ? !($scope.divStyleArr[$scope.divStyleArr.length-1].opacity=0)&&$interval.cancel(a):$scope.divStyleArr[$scope.divStyleArr.length-1].opacity-= 0.1  ;
+                                       // $scope.divStyleArr[$scope.divStyleArr.length-1].opacity >0.1 ? $scope.divStyleArr[$scope.divStyleArr.length-1].opacity-= 0.1 : $interval.cancel(a);
+                                        //$scope.divStyleArr[$scope.divStyleArr.length-1].opacity -= 0.01 ;
+                                    },40);
+                                })();
+                               // $scope.divStyleArr[ ].opacity = 0 ;
+                            }
+                            //$scope.divStyleArr[index].opacity =1 ;
+                            (function(i){
+                                var a = $interval(function(){
+                                    if($scope.divStyleArr[i].opacity >=1){
+                                        $scope.divStyleArr[i].opacity = 1;
+                                        $interval.cancel(a);
+                                    }else{
+                                        $scope.divStyleArr[i].opacity+= 0.1;
+                                    }
+                                    //$scope.divStyleArr[i].opacity <0.9 ? $scope.divStyleArr[i].opacity+= 0.1 : $interval.cancel(a);
+                                    //$scope.divStyleArr[$scope.divStyleArr.length-1].opacity -= 0.01 ;
+                                },50);
+                            })(index);
+
+                            /*$timeout(function(){
+                                index ++;
+                            },2400);*/
+                            index ++;
+                        },2000);
+                    }
+                }
+
+
+            })
+</script>
+</body>
+</html>

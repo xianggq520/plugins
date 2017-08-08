@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="listExample">
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>ngList例子</title>
+        <script src="../../common/js/angularjs/angular.min.js"></script>
+        <script type="text/javascript">
+        angular.module('listExample', [])
+        .filter('stringSliceFilter',function(){
+        	return function(str,len){
+        		console.log(len+"len");
+        		return str ? str.length > len ? str.slice( 0, len) : str : "";
+        	}
+        })
+        .filter('lower',function(){
+        	return function(str){
+        		return str.toLowerCase();
+        	}
+        })
+        /*这种定义的方式不适用于数据筛选*/
+       /*.filter('ageFilter',function(){
+        	return function(item){f
+        		console.log(item.age)
+        		return  (item.age > 12) ;
+        	}
+        })*/
+		.controller('ExampleController', ['$scope', '$filter', function ($scope, $filter) {
+		    	$scope.dateString = new Date().getTime(); 
+		       	$scope.textString = "hello，angularjs，这是一个自定义的过滤器，过滤字符串长度我10";
+		       	/*函数形式调用filter*/
+		  	   	$scope.str = $filter('stringSliceFilter')($scope.textString,10);
+		  	    $scope.dataArr = [{name:'c',age: 12},{name:'e',age: 14},{name:'a',age: 2},{name:'d',age: 12},{name:'b',age: 14}];
+		  	    $scope.ageFilter = function(item){
+		  	    	return item.age > 12;
+		  	    }
+		  	    
+		}]);
+        </script>
+</head>
+<body ng-controller="ExampleController">
+		<p>filter常用于数据格式化及数据筛选功能</p>
+		<p>系统自带、自定义filter格式化数据</p>
+		<p ng-bind="dateString | date:'yyyy-MM-dd HH:mm'"></p> 
+		<p ng-bind="textString | stringSliceFilter : 12"></p>
+		<p ng-bind="str"></p>
+		<p>filter过滤器用于数据过滤,定义方式不同于格式化filter的定义方式,ageFilter是定义在$scope上的函数</p>
+		<p ng-repeat= "item in dataArr | filter : ageFilter" ng-bind="item.name + '--' + item.age"></p>
+		<p>orderBy过滤器用于排序,可以进行多字段排序,lower用户格式化name自动为小写</p>
+		<p ng-repeat= "item in dataArr | orderBy : 'name' : true | orderBy: 'age': true " ng-bind="(item.name | lower) + '--' + item.age"></p>
+		
+		
+		
+</body>
+</html>

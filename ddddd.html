@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html ng-app="app">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="common/js/angularjs/angular.min.js"></script>
+	</head>
+	<body ng-controller="MyCtrl">
+		<div ng-controller="ECtrl">
+			<a href="" ng-click="doSome()">doSome</a>
+		</div>
+		
+		
+	</body>
+	<script>
+		angular.module("app", [])
+		.controller("MyCtrl", function($scope){
+			$scope.doSome = function(){
+				console.log("???");
+			}
+		})
+		.controller("ECtrl", function($scope){
+			$scope.doSome = function(){
+				console.log("!!!!");
+			}
+		})
+	</script>
+</html>

@@ -1,0 +1,4 @@
+{
+  "HEADLINE": "XSS possible!哈哈",
+  "PARAGRAPH": "Hello {{username}}!,您好"
+}

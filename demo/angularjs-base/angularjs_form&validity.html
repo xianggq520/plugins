@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html ng-app="app">
+	<head>
+		<meta charset="UTF-8">
+		<title>angularjs表单验证指令模板</title>
+		<script src="../../common/js/angularjs/angular.min.js"></script>
+	</head>
+	<body ng-controller="FormController">
+		<form name="form" ng-submit="submit()">
+			name:<input type="text" name="name" ng-model="formData.name"  ng-maxlength="10" ng-focus/> 
+			<span ng-show="form.name.$invalid&&form.name.$error.maxlength&&!form.name.$focused"> 最多10个字符 </span>
+			<br>
+			age:<input type="text" name="age" ng-model="formData.age"  one-to-ten ng-focus/> 
+			<span ng-show="form.age.$invalid&&form.age.$error.oneToTen&&!form.age.$focused"> 输入非法(1-10) </span>
+			<br>
+			<button type="submit">提交</button>
+		</form>	
+		 
+	<script>
+		angular.module('app',[])
+		.controller('FormController', function($scope){
+			$scope.submit = function(){
+				if($scope.form.$valid){
+					
+				}else {
+					$scope.form.submitted = true;
+					return;
+				}
+				console.log('submit successed...')
+			}
+		})
+		.directive('oneToTen', function(){
+			return {
+				require : 'ngModel',
+				link : function(scope, element, attrs, ngModel){
+					if(!ngModel) return;
+					ngModel.$parsers.unshift(function(viewValue){
+						var i = Number(viewValue);
+						if(i >=0 && i < 10){
+							ngModel.$setValidity('oneToTen', true);
+							return viewValue;
+						}else {
+							ngModel.$setValidity('oneToTen', false);
+							return undefined;
+						}
+					});
+				}
+			};
+		})
+		.directive('ngFocus', function(){
+			var FOCUS_CLASS = 'ng-focused';
+			return {
+				restrict : 'A',
+				require : 'ngModel',
+				link : function(scope, element, attrs, ngModel){
+					console.log(ngModel);
+					ngModel.$focused = false;
+					element.bind('focus', function(e){
+						element.addClass(FOCUS_CLASS);
+						scope.$apply(function(){
+							ngModel.$focused = true;
+						});
+					}).bind('blur', function(e){
+						element.removeClass(FOCUS_CLASS);
+						scope.$apply(function(){
+							ngModel.$focused = false;
+						});
+					});
+				}
+			}
+		});
+	</script>	
+	</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script>
+			
+			function class1(){
+				
+			}
+			function class2(){
+				
+			}
+			
+			class1.prototype.method = function(){
+				console.log('class1.method...');
+			}
+			
+			class1.prototype.className = 'class1';
+			
+			for(p in class1.prototype){
+				class2.prototype[p] = class1.prototype[p];
+			}
+			
+			var cls2 = new class2();
+			//cls2实例继承自cls1实例的方法methode被调用
+			cls2.method();
+			//覆写继承自class1.prototype对象的方法
+			class2.prototype.method = function(){
+				console.log('class2.method...');
+			}
+			//调用覆写后的method方法
+			cls2.method();
+			
+			//class2的覆写不影响class1
+			var cls1 = new class1();
+			cls1.method();
+			
+			class1.prototype.method2 = function(){
+				console.log('class1.method2...');
+			}
+			//继承语法（for循环之后给class1.prototype新增的属性和方法将不会被继承）
+	 		//cls2.method2();//此处报错 cls2.method2 is not a function
+			
+			/*
+			 * 这种方式实现继承虽然实现了继承和被继承class之间的独立关系，
+			 * 但是却受到语法顺序的约束，凡是在继承语句之后给被继承class添加的新属性和方法都将不会被继承。
+			 * 并且继承语法比较繁琐，需要给每一个需要继承的class都写一段继承语句for循环
+			 * 同时，扩展class2.prototype时，需要使用class2.prototype.xxxxx = ....的语法格式。
+			 * */
+		</script>
+	</body>
+</html>

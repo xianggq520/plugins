@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script>
+			function class1(){
+				
+			}
+			function class2(){
+				
+			}
+			/*function的实例对象都将从function的prototype对象来继承属性和方法*/
+			class1.prototype.p1 = 'class1';
+			class1.prototype.method1 = function(){
+				console.log('class1.method1');
+			}
+			/*
+			 * 通过公用 两个function对象的prototype来实现简单的继承
+			 * 
+			 * 缺点：对prototype对象的修改将会影响所有共享此prototype对象的function对象
+			 * */
+			class2.prototype = class1.prototype;
+			class2.prototype.p2 = 'class2';
+			class2.prototype.method2 = function(){
+				 console.log('class2.method2')
+			}
+			
+			var cls1 = new class1();
+			var cls2 = new class2();
+			/*
+			 * 给class2的prototype添加的属性和方法，将会影响class1的实例对象
+			 * */
+			console.log("cls1.p1="+cls1.p1);
+			console.log("cls2.p1="+cls2.p1);
+			console.log("cls1.p2="+cls1.p2);
+			console.log("cls2.p2="+cls2.p2);
+			
+			cls1.method1();
+			cls2.method2();
+			cls2.method1();
+			cls1.method2();
+			
+			
+		</script>
+	</body>
+</html>

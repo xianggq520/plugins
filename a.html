@@ -1,0 +1,21 @@
+<!-- 对话框 -->
+<div style="z-index:99999;" class="modal fade" ng-class="{'in':dialog.showDialog,'display-block': dialog.showDialog,'display-none':!dialog.showDialog}" ng-show="dialog.showDialog">
+  	<div style="width:425px!important;" class="modal-dialog" ng-style="setModalDialogStyle()">
+        <div class="modal-content">
+            <div class="modal-header dialogtitle">
+            	<button type="button" class="close closex" data-dismiss="modal" aria-label="Close" ng-click='close()'><span class="queren_c" aria-hidden="true">&times;</span></button>
+                <div class="modal-title modal-titles" translate="tankuangtishi.tishititle"></div>
+            </div>
+            <div class="modal-body">
+            	<p style="text-align:center;" ng-bind="dialog.dialogText"></p>
+            </div>
+            <div class="modal-footer m-footer">
+                <a class="btn btn-default" ng-show="dialog.showCancelBtn" ng-click="close()" translate="public.cancel"></a>
+                <a class="btn btn-primary" ng-show="dialog.showSureBtn" ng-click="close()" translate="public.sure"></a>
+            </div>
+        </div>
+ 	</div>
+</div>
+<!-- 公用遮罩层  保存、加载... -->
+<div style="z-index:99998;" class="modal-backdrop fade" ng-if="dialog.showDialog" ng-class="{'in': dialog.showDialog,'display-block': dialog.showDialog,'display-none':!dialog.showDialog}"></div>
+<!-- /对话框 -->

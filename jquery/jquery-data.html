@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>data demo</title>
+    <style>
+        div {
+            color: blue;
+        }
+        span {
+            color: red;
+        }
+    </style>
+    <script src="jquery.js"></script>
+</head>
+<body>
+<p>jquery的data()函数用于将数据对象绑定到jquery实例对象上。
+    语法-绑定：$(domObj).data(key,value) 取值：value = $(domObj).data(key)
+    API地址：http://api.jquery.com/data/</p>
+<div>
+    The values stored were
+    <span></span>
+    and
+    <span></span>
+</div>
+
+<script>
+    $( "div" ).data( "test", { first: 16, last: "pizza!" } );
+    $( "div" ).data( "test2", { first: 17, last: "pizzaaa!" } );
+    $( "span:first" ).text( $( "div" ).data( "test" ).first );
+    $( "span:last" ).text( $( "div" ).data( "test" ).last );
+    console.log($( "div" ).data())
+</script>
+
+</body>
+</html>

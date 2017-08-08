@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="app">
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>ngStyle例子</title>
+        <script src="../../common/js/angularjs/angular.min.js"></script>
+        <style type="text/css">
+        .mdiv {
+         	width: 200px;
+         	height: 200px;
+         	border: 1px solid red;
+        }
+         
+        </style>
+</head>
+<body ng-controller="ctrl">
+        <div class="mdiv" id="mdiv" ng-style="mdivstyle"></div> 
+        <a ng-click="addH()">addH</a>
+        <script>
+        	angular.module('app',[]).controller('ctrl',function($scope){
+        		$scope.addH = function (){
+        			
+        			console.log(document.getElementById("mdiv").offsetHeight)
+        			$scope.mdivstyle = {height:(document.getElementById("mdiv").offsetHeight + 50)+"px"};
+        			//document.getElementById("mdiv").offsetHeight = (parseInt(document.getElementById("mdiv").offsetHeight) + 50)+"px";
+        			console.log(document.getElementById("mdiv").offsetHeight)
+        		}
+        	});
+        </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>ngCopy例子</title>
+        <script src="../../common/js/angularjs/angular.min.js"></script>
+</head>
+<body>
+	<!--ng-cope用于捕获复制事件处理程序-->
+    <input ng-copy="copied=true" ng-init="copied=false; value='copy me'" ng-model="value">
+    copied: {{copied}}
+</body>
+</html>
+
+

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="includeExample">
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>ngInclude例子</title>
+        <script src="../../common/js/angularjs/angular.min.js"></script>
+        <script type="text/javascript">
+        angular.module('includeExample', [])
+.controller('ExampleController', ['$scope', function ($scope) {
+        $scope.templates =
+        [{ name: 'include_1.html', url: 'include_1.html' },
+        { name: 'include_2.html', url: 'include_2.html' }];
+        $scope.template = $scope.templates[0];
+        $scope.count = 0;
+        $scope.param = 0;
+        $scope.add = function(){
+        	
+        	console.log('eee'+ $scope.name);
+        	$scope.count ++;
+        	console.log(',~~~,');
+        }
+         
+}]);
+		
+        </script>
+</head>
+<body>
+    <div ng-controller="ExampleController">
+    	<p>！ng-include指令将创建新的$scope对象</p>
+    	<p>onload (optional) 新的部分加载时触发一个表达式。($scope上的表达式) </p>
+    	<p>autoscroll (optional) 设置滚动条。</p>
+        <select ng-model="template" ng-options="t.name for t in templates">
+        	<option value="">(blank)</option>
+        </select>
+    	url of the template: <tt>{{template.url}}</tt>
+        <hr />
+        <div class="slide-animate-container">
+        	{{count+">>>>>>>>~~~~"}}</br>
+        	{{param+">>>>>>>>----"}}</br>
+        	{{name+">>>>>>>>>...."}}
+        	<div class="slide-animate" ng-include="template.url" onload="add()" ng-init="name='include'"></div>
+    	</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="app">
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>ngClass例子</title>
+        <script src="../../common/js/angularjs/angular.min.js"></script>
+        <style type="text/css">
+        .strike {
+        text-decoration: line-through;
+        }
+        .bold {
+        font-weight: bold;
+        }
+        .red {
+        color: red;
+        }
+        </style>
+</head>
+<body ng-controller="ctl">
+         <script>
+         	angular.module('app',[]).controller('ctl',function($scope){
+         		var arr = [1,2,3];
+         		var c = [];
+         		
+         		angular.copy(arr,c);
+         		
+         		var d = new Date("2016-12-22 18:30:25");
+         		
+         		console.log(c);
+         		console.log(d);
+         	})
+         	
+         	
+         </script>
+</body>
+</html>

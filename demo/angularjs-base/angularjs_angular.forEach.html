@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="app">
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>ngClass例子</title>
+        <script src="../../common/js/angularjs/angular.min.js"></script>
+        <style type="text/css">
+         
+        </style>
+</head>
+<body ng-controller="DController">
+	{{dateArr}}
+     <span ng-repeat="date in dateArr" ng-bind="date"></span>
+     <script>
+     Date.prototype.Format = function (fmt) {
+    var o = {
+        "M+": this.getMonth() + 1, //月份 
+        "d+": this.getDate(), //日 
+        "h+": this.getHours(), //小时 
+        "m+": this.getMinutes(), //分 
+        "s+": this.getSeconds(), //秒 
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+        "S": this.getMilliseconds() //毫秒 
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+}
+     	angular.module("app", [])
+     	.controller("DController", function($scope){
+     		$scope.dateArr = [new Date().getTime()];
+     		angular.forEach($scope.dateArr, function( millisecondItem, index){
+     			$scope.dateArr[index] = new Date(millisecondItem).Format("yyyy-MM-dd hh:mm:ss");
+     		});
+     		/*var dateItem ;
+     		for(var i = 0; i < $scope.dateArr.length; i ++){
+     			 
+     			$scope.dateArr[i] = new Date(($scope.dateArr[i] + 10800000)).Format("yyyy-MM-dd hh:mm:ss");
+     		}
+     		console.log($scope.dateArr);*/
+     	});
+     </script>
+</body>
+</html>

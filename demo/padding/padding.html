@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>padding属性</title>
+    <style>
+        .container {
+            float: left;
+            width: 200px;
+            height: 500px;
+            margin: 0 50px;
+            border:1px solid red;
+        }
+        .div1 {
+            padding:50%;
+            background-color: #4cae4c;
+        }
+        .div2 {
+            padding: 50px 100px;
+            background-color: #5bc0de;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="div1"></div>
+    <p>行级块元素使用padding：50%可以实现自适应外层容器宽度的正方形,x%是相对于父容器宽度的百分比来设置padding值</p>
+</div>
+
+<div class="container">
+    <div class="div2"></div>
+    <p> padding: 50px 100px;</p>
+</div>
+</body>
+</html>

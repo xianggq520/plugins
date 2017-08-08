@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html ng-app="en_us_app">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/angular.min.js"></script>
+		 
+		<script src="js/angular-cookies.min.js"></script>
+		<script src="js/angular-translate.js"></script>
+		<script src="js/angular-sanitize.min.js"></script>
+		<script src="js/angular-translate-loader-static-files.min.js"></script>
+		<style>
+			.hahhaha {
+				color: red;
+			}
+		</style>
+	</head>
+	<body ng-controller="MyController">
+	  
+		  <div>
+		      <p translate="HEADLINE" ></p>
+		      <p translate="PARAGRAPH" translate-values="{username: '<span class=\'hahhaha\' style=\'color:red;\'>{{username}}</span>'}"></p>
+		</div>
+		 
+			 <select class="language-switching" ng-model="cur_lang" ng-change="switching(cur_lang)">
+			    <option value="en">English</option>
+			    <option value="cn">简体中文</option>
+    		</select>
+		<script>
+		
+			var app = angular.module('en_us_app',['ngCookies','pascalprecht.translate', 'ngSanitize'])
+			.config(['$translateProvider',function($translateProvider){
+			    //var lang = window.localStorage.lang||'cn';
+			    var lang = ""||'cn';
+			    console.log(lang+"00000");
+			    $translateProvider.useStaticFilesLoader({
+			        prefix: 'i18n/',
+			        suffix: '.json'
+			    });
+			      
+		        $translateProvider.preferredLanguage(lang);
+		        $translateProvider.useSanitizeValueStrategy('sanitize');
+			}]);
+			
+			app.controller('MyController',
+			['$rootScope', '$scope', '$window', '$cookies', '$cookieStore', '$translate', function($rootScope, $scope ,$window, $cookies, $cookieStore, $translate){
+				 
+			 	$scope.switching = function(lang){
+			        $translate.use(lang);
+			        window.localStorage.lang = lang;
+			        window.location.reload();
+		    	};
+		    	
+				 $scope.cur_lang = window.localStorage.lang;
+				 $scope.username = 'xianggq';
+				 
+			}]);
+			
+			app.filter("T", ['$translate', function($translate) {
+			    return function(key) {
+			        if(key){
+			        	console.log("---"+key);
+			            return $translate.instant(key);
+			        }
+			    };
+			}]);
+			
+			app.factory('T', ['$translate', function($translate) {
+			    var T = {
+			        T:function(key) {
+			            if(key){
+			                return $translate.instant(key);
+			            }
+			            return key;
+			        }
+			    }
+			    return T;
+			}]);
+			 
+		</script>
+	</body>
+</html>

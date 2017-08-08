@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="app">
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>ngClass例子</title>
+        <script src="../../common/js/angularjs/angular.min.js"></script>
+        <style type="text/css">
+        .strike {
+        text-decoration: line-through;
+        }
+        .bold {
+        font-weight: bold;
+        }
+        .red {
+        color: red;
+        }
+        </style>
+</head>
+<body ng-controller="ParentController">
+	{{name+'?'}}
+	<div ng-controller="ChildController">
+		{{name+"."}}
+	</div>
+ 	<script>
+     	angular.module('app',[])
+     	.controller('ParentController',function($scope){
+     		$scope.parentFunc = function(){
+     		 	$scope.name = "Parent"
+ 		 	} 
+     	})
+     	.controller('ChildController',function($scope){
+ 		 	//此处调用父$scope的函数
+ 		 	$scope.parentFunc();
+     	})
+     	
+     	
+ 	</script>
+</body>
+</html>
